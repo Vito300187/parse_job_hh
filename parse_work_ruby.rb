@@ -5,6 +5,7 @@ require 'net/http'
 require 'json'
 require 'pry'
 require 'csv'
+require 'google_drive'
 require_relative './helpers'
 
 all_vacancies = []
@@ -22,7 +23,7 @@ request = Net::HTTP.get(URI(url)); nil
 json_parse_vacancy = JSON.parse(request)
 pages_vacancies = json_parse_vacancy['pages']
 
-abort('извините, но город не найден') if pages_vacancies.nil?
+abort('Извините, но город не найден') if pages_vacancies.nil?
 puts "All #{what_vacancy_find.upcase} vacancies in #{city} -> #{json_parse_vacancy['found'].to_i} pieces."
 
 pages_vacancies.times do |page|
@@ -30,18 +31,30 @@ pages_vacancies.times do |page|
   JSON.parse(request)['items'].each { |el| all_vacancies << el }
 end
 
-abort('Sorry, but no vacancies were found') if all_vacancies.count.zero?
+abort('Извините, но вакансии не найдены') if all_vacancies.count.zero?
 
-puts 'Vacancies for Junior interesting? ((Y)es / (N)o)'
-answer_user = gets.chomp.downcase
+puts 'Какой уровень ищем? (A)ll or (J)unior ?'
+answer_user = gets.chomp.downcase[0]
 
-abort('Sorry, incorrect input') unless %w[yes y no n].any? { |answer| answer_user.include?(answer) }
+abort('Извините, но ввод некорректен') unless %w[A a J j].any? { |answer| answer_user.include?(answer) }
 
-if %w[yes y].include?(answer_user)
+if %w[J j].include?(answer_user)
   puts "Vacancies for Junior|#{what_vacancy_find.capitalize} -> #{list_junior_job(all_vacancies).count}"
   print_list_junior_job(all_vacancies)
+
+elsif %w[A a].include?(answer_user)
+  puts "All vacancies|#{what_vacancy_find.capitalize} -> #{list_job(all_vacancies).count}"
+  list_job(all_vacancies)
+
 else
   abort('No problem, Good luck!')
+
 end
 
-# FoundVacancy.new('Ruby', 'Moscow')
+
+
+
+
+session = GoogleDrive::Session.from_config('config.json')
+ws = session.spreadsheet_by_key("pz7XtlQC-PYx-jrVMJErTcg").worksheets[0]
+p ws[2, 1]
