@@ -3,10 +3,8 @@
 require 'open-uri'
 require 'net/http'
 require 'json'
-require 'pry'
-require 'csv'
-require 'google_drive'
-require_relative './helpers'
+require_relative 'helpers'
+require_relative 'google_spreadsheets'
 
 all_vacancies = []
 
@@ -50,11 +48,3 @@ else
   abort('No problem, Good luck!')
 
 end
-
-
-
-
-
-session = GoogleDrive::Session.from_config('config.json')
-ws = session.spreadsheet_by_key("pz7XtlQC-PYx-jrVMJErTcg").worksheets[0]
-p ws[2, 1]
