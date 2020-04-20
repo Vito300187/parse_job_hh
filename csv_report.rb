@@ -6,13 +6,15 @@ require 'time'
 class CsvReport
   def initialize(all_vacancies)
     @all_vacancies = all_vacancies
+    @full_report_path = '/Users/vitalii-artec3d/Desktop/Home/api_hh/yearly_full_ruby_job_report.csv'
+    @short_report_path = '/Users/vitalii-artec3d/Desktop/Home/api_hh/yearly_short_ruby_job_report.csv'
   end
 
   def full_report
-    CSV.open('yearly_full_ruby_job_report.csv', 'a+') do |csv|
+    CSV.open(@full_report_path, 'a+') do |csv|
       headers = %w[Дата Название Город Зарплата\ от Зарплата\ до Валюта Компания]
 
-      if File.file?('yearly_full_ruby_job_report.csv') && File.readlines('yearly_full_ruby_job_report.csv')[0].nil?
+      if File.file?(@full_report_path) && File.readlines(@full_report_path)[0].nil?
         csv << headers
       end
 
@@ -31,10 +33,10 @@ class CsvReport
   end
 
   def short_report
-    CSV.open('yearly_short_ruby_job_report.csv', 'a+') do |csv|
+    CSV.open(@short_report_path, 'a+') do |csv|
       headers = %w[Дата Кол-во\ вакансий]
 
-      if File.file?('yearly_short_ruby_job_report.csv') && File.readlines('yearly_short_ruby_job_report.csv')[0].nil?
+      if File.file?(@short_report_path) && File.readlines(@short_report_path)[0].nil?
         csv << headers
       end
 
