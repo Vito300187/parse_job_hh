@@ -14,9 +14,7 @@ class CsvReport
     CSV.open(@full_report_path, 'a+') do |csv|
       headers = %w[Дата Название Город Зарплата\ от Зарплата\ до Валюта Компания]
 
-      if File.file?(@full_report_path) && File.readlines(@full_report_path)[0].nil?
-        csv << headers
-      end
+      csv << headers if File.file?(@full_report_path) && File.readlines(@full_report_path)[0].nil?
 
       @all_vacancies.each do |params|
         csv << [
@@ -36,10 +34,7 @@ class CsvReport
     CSV.open(@short_report_path, 'a+') do |csv|
       headers = %w[Дата Кол-во\ вакансий]
 
-      if File.file?(@short_report_path) && File.readlines(@short_report_path)[0].nil?
-        csv << headers
-      end
-
+      csv << headers if File.file?(@short_report_path) && File.readlines(@short_report_path)[0].nil?
       csv << [Time.now.strftime('%d.%m.%Y'), @all_vacancies.count]
     end
   end
