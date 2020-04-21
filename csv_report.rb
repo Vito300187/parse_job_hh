@@ -35,7 +35,7 @@ class CsvReport
       headers = %w[Дата Кол-во\ вакансий]
 
       csv << headers if File.file?(@short_report_path) && File.readlines(@short_report_path)[0].nil?
-      csv << [Time.now.strftime('%d.%m.%Y'), @all_vacancies.count]
+      csv << [Time.now.strftime('%d.%m.%Y'), @all_vacancies]
     end
   end
 end
