@@ -5,6 +5,8 @@ require 'open-uri'
 require 'json'
 require 'pry'
 require_relative 'csv_report.rb'
+require_relative 'helpers/helpers'
+require 'pg'
 
 list_vacancies_two_thousand = []
 find_request = 'ruby'
@@ -23,5 +25,8 @@ end
 
 CsvReport.new(vacancies_count).short_report
 CsvReport.new(list_vacancies_two_thousand).full_report
+
+conn = PG.connect(dbname: 'vacancies')
+list_vacancies_two_thousand.each { |params| conn.exec(request_into_database(params)) }
 
 puts "Вакансий сегодня -> #{vacancies_count}"
