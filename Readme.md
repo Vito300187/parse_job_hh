@@ -4,6 +4,8 @@ Variable ```find_request``` in file ```parser_hh_to_csv.rb``` - search query.
 
 Unfortunately the query depth can't be more than 2000 results.
 
+For run need input command in console -> ```ruby parser_hh_to_csv.rb```
+
 Create postgres database:
 
 ```
